@@ -148,9 +148,51 @@ function loadLevel(number) {
     key = null;
     door = null;
     
-    // Go through every row and every column of the map
     for (var row = 0; row < ROWS; row++) {
         for (var col = 0; col < COLS; col++) {
             var letter = map[row].charAt(col);
-            var x = col * TILE;   // pixel position of this tile
+            var x = col * TILE;  
             var y = row * TILE;
+        
+            if (letter == "S") {
+                for (var i = 0; i < numPlayers; i++) {
+                    players.push({
+                        x: x + 3 + i * 30, y: y + 18, size: 28,
+                        color: playerColors[i],
+                        controls: controls[i],
+                        lives: 3,
+                        facingX: 0, facingY: -1,  
+                        invincible: 0,            
+                        attackTimer: 0,            
+                        attackCooldown: 0           
+                    });
+                }
+            } else if (letter == "C") {
+                coins.push({ x: x + 22, y: y + 22, size: 20 });
+            } else if (letter == "K") {
+                key = { x: x + 20, y: y + 20, size: 24, visible: (number != 2) };
+            } else if (letter == "T") {
+                traps.push({ x: x + 14, y: y + 14, size: 36, timed: (number == 1) });
+            } else if (letter == "G") {
+                var guardSpeedX = 1.2;
+                var guardSpeedY = 0;
+                if (map[row].charAt(col - 1) == "#" && map[row].charAt(col + 1) == "#") {
+                    guardSpeedX = 0;
+                    guardSpeedY = 1.2;
+                }
+                guards.push({
+                    x: x + 14, y: y + 14, size: 36,
+                    speedX: guardSpeedX, speedY: guardSpeedY,
+                    health: (number == 0) ? 1 : 2,  
+                    isGhost: (number == 1),
+                    hitCooldown: 0
+                });
+            } else if (letter == "B") {
+                boss = { x: x + 6, y: y + 6, size: 52, health: 5, hitCooldown: 0 };
+            } else if (letter == "D" || letter == "E") {
+                door = { x: x + 8, y: y + 8, size: 48 };
+            }
+        }
+    }
+    gameState = "playing";
+}
