@@ -209,3 +209,21 @@ function startGame(howManyPlayers) {
     scoreAtLevelStart = 0;
     loadLevel(0);
 }
+
+// ---------- 6. COLLISIONS AND MOVEMENT ----------
+// Is this single point (px, py) inside a wall or a locked door?
+function isBlocked(px, py) {
+    var col = Math.floor(px / TILE);
+    var row = Math.floor(py / TILE);
+    if (col < 0 || row < 0 || col >= COLS || row >= ROWS) {
+        return true;              // outside the map counts as a wall
+    }
+    var letter = map[row].charAt(col);
+    if (letter == "#") {
+        return true;
+    }
+    if ((letter == "D" || letter == "E") && hasKey == false) {
+        return true;              // the door is locked until we have the key
+    }
+    return false;
+}
