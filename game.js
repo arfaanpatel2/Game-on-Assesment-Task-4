@@ -131,3 +131,26 @@ setInterval(function () {
         musicPosition = 0;        // go back to the start of the tune
     }
 }, 300);
+
+// ---------- 5. LOADING A LEVEL ----------
+// Reads the map letters and creates the player, guards, coins, etc.
+function loadLevel(number) {
+    levelNumber = number;
+    map = levels[number].map;
+    score = scoreAtLevelStart;
+    hasKey = false;
+    frameCount = 0;
+    players = [];
+    guards = [];
+    coins = [];
+    traps = [];
+    boss = null;
+    key = null;
+    door = null;
+    
+    // Go through every row and every column of the map
+    for (var row = 0; row < ROWS; row++) {
+        for (var col = 0; col < COLS; col++) {
+            var letter = map[row].charAt(col);
+            var x = col * TILE;   // pixel position of this tile
+            var y = row * TILE;
