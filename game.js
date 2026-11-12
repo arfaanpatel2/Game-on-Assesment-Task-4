@@ -271,3 +271,12 @@ function spikesAreUp(trap) {
     return Math.floor(frameCount / 60) % 2 == 1;
 }
 
+function countAlivePlayers() {
+    var count = 0;
+    for (var i = 0; i < players.length; i++) {
+        if (players[i].lives > 0) {
+            count = count + 1;
+        }
+    }
+    return count;
+}
