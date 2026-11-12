@@ -80,3 +80,54 @@ var traps = [];                   // list of traps
 var boss = null;                  // the Iron Warden (null when there is no boss)
 var key = null;                   // the key
 var door = null;                  // the exit door
+
+// The keys each player uses
+var controls = [
+    { up: "w", down: "s", left: "a", right: "d", attack: " " },
+    { up: "arrowup", down: "arrowdown", left: "arrowleft", right: "arrowright", attack: "enter" }
+];
+
+// This object remembers which keyboard keys are being held down right now
+var keysDown = {};
+
+// ---------- 4. SOUND ----------
+var audioCtx = null;              // created after the first key press
+var soundOn = true;
+
+// Plays one beep. pitch = how high, seconds = how long, volume = how loud
+function playSound(pitch, seconds, volume) {
+    if (audioCtx == null || soundOn == false) {
+        return;                   // no sound available or sound is turned off
+    }
+    var oscillator = audioCtx.createOscillator();   // makes the beep
+    var gain = audioCtx.createGain();               // controls the volume
+    oscillator.type = "square";
+    oscillator.frequency.value = pitch;
+    gain.gain.value = volume;
+    oscillator.connect(gain);
+    gain.connect(audioCtx.destination);
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + seconds);
+}
+
+// Sound effects (each one is just a beep or two)
+function soundCoin()  { playSound(900, 0.1, 0.05); }
+function soundKey()   { playSound(1200, 0.2, 0.05); }
+function soundSwing() { playSound(500, 0.05, 0.04); }
+function soundHit()   { playSound(300, 0.1, 0.06); }
+function soundHurt()  { playSound(150, 0.3, 0.08); }
+function soundLevelDone() {
+    playSound(523, 0.15, 0.05);
+    setTimeout(function () { playSound(784, 0.3, 0.05); }, 150);
+}
+
+// Background music: every 0.3 seconds play the next note in this list
+var musicNotes = [220, 262, 330, 262, 220, 262, 330, 392];
+var musicPosition = 0;
+setInterval(function () {
+    playSound(musicNotes[musicPosition], 0.2, 0.02);
+    musicPosition = musicPosition + 1;
+    if (musicPosition >= musicNotes.length) {
+        musicPosition = 0;        // go back to the start of the tune
+    }
+}, 300);
