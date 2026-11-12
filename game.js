@@ -262,3 +262,12 @@ function touching(a, b) {
     if (a.y > b.y + b.size) return false;   // a is completely below b
     return true;
 }
+
+// Timed traps have their spikes up for 1 second, then down for 1 second
+function spikesAreUp(trap) {
+    if (trap.timed == false) {
+        return true;              // normal traps are always dangerous
+    }
+    return Math.floor(frameCount / 60) % 2 == 1;
+}
+
