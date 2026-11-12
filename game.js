@@ -253,3 +253,12 @@ function moveThing(thing, moveX, moveY) {
     }
     return hitWall;
 }
+
+// Are two squares overlapping? (Every object has x, y and size.)
+function touching(a, b) {
+    if (a.x + a.size < b.x) return false;   // a is completely left of b
+    if (a.x > b.x + b.size) return false;   // a is completely right of b
+    if (a.y + a.size < b.y) return false;   // a is completely above b
+    if (a.y > b.y + b.size) return false;   // a is completely below b
+    return true;
+}
