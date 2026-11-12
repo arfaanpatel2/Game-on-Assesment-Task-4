@@ -61,3 +61,21 @@ var levels = [
         ]
     }
 ];
+
+var gameState = "menu";           
+var numPlayers = 1;          
+var levelNumber = 0;              
+var score = 0;
+var scoreAtLevelStart = 0;        
+var hasKey = false;     
+var frameCount = 0;          
+var messageTimer = 0;           
+
+var map;                          
+var players = [];                
+var guards = [];
+var coins = [];            
+var traps = [];             
+var boss = null;          
+var key = null;                
+var door = null;                 
