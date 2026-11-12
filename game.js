@@ -14,3 +14,24 @@ var canvas = document.getElementById("game");
 var ctx = canvas.getContext("2d");
 canvas.width = COLS * TILE;
 canvas.height = ROWS * TILE;
+
+var levels = [
+        {
+            name: "The Prison Cells",
+            wallColor: "#6e655b",
+            floorColor: "#3b3631",
+
+        },
+        {
+            name: "The Underground Tunnels",
+            wallColor: "#4d4237",
+            floorColor: "#2f2c27",
+
+        },
+        {
+            name: "The Warden’s Chamber",
+            wallColor: "#3f3856",
+            floorColor: "#262130",
+
+        }
+    ];
