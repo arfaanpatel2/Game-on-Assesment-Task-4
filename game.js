@@ -62,20 +62,21 @@ var levels = [
     }
 ];
 
-var gameState = "menu";           
-var numPlayers = 1;          
-var levelNumber = 0;              
+// ---------- 3. VARIABLES THAT CHANGE DURING THE GAME ----------
+var gameState = "menu";           // "menu", "playing", "caught", "levelDone" or "won"
+var numPlayers = 1;               // 1 or 2
+var levelNumber = 0;              // 0 = level 1, 1 = level 2, 2 = level 3
 var score = 0;
-var scoreAtLevelStart = 0;        
-var hasKey = false;     
-var frameCount = 0;          
-var messageTimer = 0;           
+var scoreAtLevelStart = 0;        // remembered so we can reset the score on a restart
+var hasKey = false;               // has a player picked up the key yet?
+var frameCount = 0;               // counts how many frames have passed (60 per second)
+var messageTimer = 0;             // counts down while a message is on screen
 
-var map;                          
-var players = [];                
-var guards = [];
-var coins = [];            
-var traps = [];             
-var boss = null;          
-var key = null;                
-var door = null;                 
+var map;                          // the map of the current level
+var players = [];                 // list of players
+var guards = [];                  // list of guards
+var coins = [];                   // list of coins
+var traps = [];                   // list of traps
+var boss = null;                  // the Iron Warden (null when there is no boss)
+var key = null;                   // the key
+var door = null;                  // the exit door
