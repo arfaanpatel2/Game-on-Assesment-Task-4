@@ -227,3 +227,12 @@ function isBlocked(px, py) {
     }
     return false;
 }
+
+// Can a square of this size stand at (x, y)? We test its four corners.
+function canMoveTo(x, y, size) {
+    if (isBlocked(x, y)) return false;
+    if (isBlocked(x + size, y)) return false;
+    if (isBlocked(x, y + size)) return false;
+    if (isBlocked(x + size, y + size)) return false;
+    return true;
+}
