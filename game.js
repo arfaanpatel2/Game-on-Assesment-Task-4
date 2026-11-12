@@ -202,3 +202,10 @@ function loadLevel(number) {
     }
     gameState = "playing";
 }
+
+// Starts a brand new game with 1 or 2 players
+function startGame(howManyPlayers) {
+    numPlayers = howManyPlayers;
+    scoreAtLevelStart = 0;
+    loadLevel(0);
+}
