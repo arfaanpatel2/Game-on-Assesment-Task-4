@@ -236,3 +236,20 @@ function canMoveTo(x, y, size) {
     if (isBlocked(x + size, y + size)) return false;
     return true;
 }
+
+// Moves something sideways and then up/down (separately so it can slide along walls).
+// Returns true if it bumped into a wall.
+function moveThing(thing, moveX, moveY) {
+    var hitWall = false;
+    if (canMoveTo(thing.x + moveX, thing.y, thing.size)) {
+        thing.x = thing.x + moveX;
+    } else {
+        hitWall = true;
+    }
+    if (canMoveTo(thing.x, thing.y + moveY, thing.size)) {
+        thing.y = thing.y + moveY;
+    } else {
+        hitWall = true;
+    }
+    return hitWall;
+}
