@@ -280,3 +280,36 @@ function countAlivePlayers() {
     }
     return count;
 }
+
+// ---------- 7. UPDATING THE GAME (runs 60 times a second) ----------
+function updatePlayer(p) {
+    // Count down the timers
+    if (p.invincible > 0) p.invincible = p.invincible - 1;
+    if (p.attackTimer > 0) p.attackTimer = p.attackTimer - 1;
+    if (p.attackCooldown > 0) p.attackCooldown = p.attackCooldown - 1;
+
+    // Work out which way the player wants to go
+    var moveX = 0;
+    var moveY = 0;
+    if (keysDown[p.controls.left])  moveX = -2.5;
+    if (keysDown[p.controls.right]) moveX = 2.5;
+    if (keysDown[p.controls.up])    moveY = -2.5;
+    if (keysDown[p.controls.down])  moveY = 2.5;
+
+    if (moveX != 0 || moveY != 0) {
+        // Remember which way we are facing (-1, 0 or 1 on each axis)
+        p.facingX = Math.sign(moveX);
+        p.facingY = Math.sign(moveY);
+        moveThing(p, moveX, moveY);
+    }
+
+    // Swing the sword
+    if (keysDown[p.controls.attack] && p.attackCooldown == 0) {
+        p.attackTimer = 10;
+        p.attackCooldown = 25;
+        soundSwing();
+    }
+    if (p.attackTimer > 0) {
+        swordHits(p);
+    }
+}
