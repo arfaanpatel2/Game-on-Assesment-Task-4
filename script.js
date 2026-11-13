@@ -664,3 +664,22 @@ function updateInfoText() {
     info.textContent = words;
 }
 
+// Draws one complete picture of the game
+function drawGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);        // wipe the old picture
+    if (gameState == "menu") {
+        drawMenu();
+        return;
+    }
+    drawMap();
+    drawDoor();
+    drawTraps();
+    drawItems();
+    drawGuards();
+    drawBoss();
+    drawPlayers();
+
+    if (gameState == "levelDone") drawMessage("Level complete!", "Score: " + score);
+    if (gameState == "caught") drawMessage("You were caught!", "Restarting the level...");
+    if (gameState == "won") drawMessage("You escaped the prison!", "Final score: " + score + "  (press Enter for the menu)");
+}
