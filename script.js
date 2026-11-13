@@ -420,3 +420,22 @@ function checkDamage(p) {
         }
     }
 }
+
+
+// Pick up coins and the key (both players share the score)
+function collectItems(p) {
+    for (var i = 0; i < coins.length; i++) {
+        if (touching(p, coins[i])) {
+            coins.splice(i, 1);   // remove the coin
+            score = score + 10;
+            soundCoin();
+            break;
+        }
+    }
+    if (key != null && key.visible && touching(p, key)) {
+        hasKey = true;
+        key = null;
+        score = score + 20;
+        soundKey();
+    }
+}
