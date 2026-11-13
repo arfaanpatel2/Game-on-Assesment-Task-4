@@ -86,6 +86,7 @@ var controls = [
     { up: "w", down: "s", left: "a", right: "d", attack: " " },
     { up: "arrowup", down: "arrowdown", left: "arrowleft", right: "arrowright", attack: "enter" }
 ];
+var playerColors = ["#3b82c4", "#4caf50"];   // blue for player 1, green for player 2
 
 // This object remembers which keyboard keys are being held down right now
 var keysDown = {};
@@ -111,11 +112,11 @@ function playSound(pitch, seconds, volume) {
 }
 
 // Sound effects (each one is just a beep or two)
-function soundCoin()  { playSound(900, 0.1, 0.05); }
-function soundKey()   { playSound(1200, 0.2, 0.05); }
+function soundCoin() { playSound(900, 0.1, 0.05); }
+function soundKey() { playSound(1200, 0.2, 0.05); }
 function soundSwing() { playSound(500, 0.05, 0.04); }
-function soundHit()   { playSound(300, 0.1, 0.06); }
-function soundHurt()  { playSound(150, 0.3, 0.08); }
+function soundHit() { playSound(300, 0.1, 0.06); }
+function soundHurt() { playSound(150, 0.3, 0.08); }
 function soundLevelDone() {
     playSound(523, 0.15, 0.05);
     setTimeout(function () { playSound(784, 0.3, 0.05); }, 150);
@@ -147,14 +148,14 @@ function loadLevel(number) {
     boss = null;
     key = null;
     door = null;
-    
+
     // Go through every row and every column of the map
     for (var row = 0; row < ROWS; row++) {
         for (var col = 0; col < COLS; col++) {
             var letter = map[row].charAt(col);
             var x = col * TILE;   // pixel position of this tile
             var y = row * TILE;
-        
+
             if (letter == "S") {
                 // Make 1 or 2 players, standing side by side
                 for (var i = 0; i < numPlayers; i++) {
@@ -291,10 +292,10 @@ function updatePlayer(p) {
     // Work out which way the player wants to go
     var moveX = 0;
     var moveY = 0;
-    if (keysDown[p.controls.left])  moveX = -2.5;
+    if (keysDown[p.controls.left]) moveX = -2.5;
     if (keysDown[p.controls.right]) moveX = 2.5;
-    if (keysDown[p.controls.up])    moveY = -2.5;
-    if (keysDown[p.controls.down])  moveY = 2.5;
+    if (keysDown[p.controls.up]) moveY = -2.5;
+    if (keysDown[p.controls.down]) moveY = 2.5;
 
     if (moveX != 0 || moveY != 0) {
         // Remember which way we are facing (-1, 0 or 1 on each axis)
@@ -724,4 +725,3 @@ setInterval(function () {
     drawGame();
     updateInfoText();
 }, 1000 / 60);
-
