@@ -499,3 +499,39 @@ function updateGame() {
         }
     }
 }
+
+// ---------- 8. DRAWING ----------
+// Draws a filled circle
+function drawCircle(x, y, radius, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+// Draws centred text on the canvas
+function drawText(words, y, size, color) {
+    ctx.fillStyle = color;
+    ctx.font = size + "px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(words, canvas.width / 2, y);
+}
+
+// Draws the walls and floor
+function drawMap() {
+    var level = levels[levelNumber];
+    for (var row = 0; row < ROWS; row++) {
+        for (var col = 0; col < COLS; col++) {
+            var letter = map[row].charAt(col);
+            if (letter == "#") {
+                ctx.fillStyle = level.wallColor;
+                ctx.fillRect(col * TILE, row * TILE, TILE, TILE);
+                ctx.strokeStyle = "black";       // dark outline makes the bricks visible
+                ctx.strokeRect(col * TILE, row * TILE, TILE, TILE);
+            } else {
+                ctx.fillStyle = level.floorColor;
+                ctx.fillRect(col * TILE, row * TILE, TILE, TILE);
+            }
+        }
+    }
+}
