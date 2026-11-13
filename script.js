@@ -314,3 +314,79 @@ function updatePlayer(p) {
     }
 }
 
+// Checks if the player's sword is hitting a guard or the boss
+function swordHits(p) {
+    // The sword is a square that sits in front of the player
+    var sword = {
+        x: p.x + p.size / 2 + p.facingX * 30 - 20,
+        y: p.y + p.size / 2 + p.facingY * 30 - 20,
+        size: 40
+    };
+
+    // Check every guard
+    for (var i = 0; i < guards.length; i++) {
+        var g = guards[i];
+        // hitCooldown stops one swing from hitting the same guard many times
+        if (touching(sword, g) && g.hitCooldown == 0) {
+            g.health = g.health - 1;
+            g.hitCooldown = 20;
+            if (g.health <= 0) {
+                guards.splice(i, 1);          // remove the guard from the list
+                score = score + 25;
+                soundHit();
+                return;
+            }
+            soundHit();
+        }
+    }
+
+    // Check the boss
+    if (boss != null && touching(sword, boss) && boss.hitCooldown == 0) {
+        boss.health = boss.health - 1;
+        boss.hitCooldown = 20;
+        soundHit();
+        if (boss.health <= 0) {
+            boss = null;
+            score = score + 100;
+            key.visible = true;               // the key appears now
+        }
+    }
+}
+
+// Guards walk in a straight line and turn around when they hit a wall
+function updateGuard(g) {
+    if (g.hitCooldown > 0) g.hitCooldown = g.hitCooldown - 1;
+    var hitWall = moveThing(g, g.speedX, g.speedY);
+    if (hitWall) {
+        g.speedX = -g.speedX;
+        g.speedY = -g.speedY;
+    }
+}
+
+// The boss walks slowly towards the closest player
+function updateBoss() {
+    if (boss.hitCooldown > 0) boss.hitCooldown = boss.hitCooldown - 1;
+
+    // Find the closest living player
+    var closest = null;
+    var closestDistance = 99999;
+    for (var i = 0; i < players.length; i++) {
+        if (players[i].lives > 0) {
+            var dx = players[i].x - boss.x;
+            var dy = players[i].y - boss.y;
+            var distance = Math.sqrt(dx * dx + dy * dy);   // Pythagoras
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closest = players[i];
+            }
+        }
+    }
+    
+    // Step towards that player
+    if (closest != null && closestDistance > 0) {
+        var stepX = (closest.x - boss.x) / closestDistance * 0.9;
+        var stepY = (closest.y - boss.y) / closestDistance * 0.9;
+        moveThing(boss, stepX, stepY);
+    }
+}
+
