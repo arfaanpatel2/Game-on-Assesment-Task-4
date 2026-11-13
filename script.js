@@ -535,3 +535,48 @@ function drawMap() {
         }
     }
 }
+
+// Brown and locked, or black with a green outline when open
+function drawDoor() {
+    if (hasKey) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(door.x, door.y, door.size, door.size);
+        ctx.strokeStyle = "lime";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(door.x, door.y, door.size, door.size);
+    } else {
+        ctx.fillStyle = "#6b4a2a";
+        ctx.fillRect(door.x, door.y, door.size, door.size);
+        drawCircle(door.x + 24, door.y + 24, 6, "gold");   // the lock
+    }
+}
+
+// Spikes are drawn as three triangles (red for timed traps)
+function drawTraps() {
+    for (var i = 0; i < traps.length; i++) {
+        var t = traps[i];
+        ctx.fillStyle = "#26221e";
+        ctx.fillRect(t.x, t.y, t.size, t.size);      // the plate
+        if (spikesAreUp(t)) {
+            ctx.fillStyle = t.timed ? "red" : "lightgray";
+            for (var s = 0; s < 3; s++) {
+                ctx.beginPath();
+                ctx.moveTo(t.x + 2 + s * 11, t.y + 32);       // bottom left of spike
+                ctx.lineTo(t.x + 8 + s * 11, t.y + 4);        // tip of spike
+                ctx.lineTo(t.x + 14 + s * 11, t.y + 32);      // bottom right of spike
+                ctx.fill();
+            }
+        }
+    }
+}
+
+function drawItems() {
+    for (var i = 0; i < coins.length; i++) {
+        drawCircle(coins[i].x + 10, coins[i].y + 10, 10, "gold");
+    }
+    if (key != null && key.visible) {
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(key.x, key.y + 8, key.size, 8);          // the long part of the key
+        drawCircle(key.x + 4, key.y + 12, 8, "yellow");       // the round handle
+    }
+}
