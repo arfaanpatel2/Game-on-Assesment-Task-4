@@ -390,7 +390,6 @@ function updateBoss() {
     }
 }
 
-
 // Takes one life away from a player
 function hurtPlayer(p) {
     p.lives = p.lives - 1;
@@ -421,7 +420,6 @@ function checkDamage(p) {
     }
 }
 
-
 // Pick up coins and the key (both players share the score)
 function collectItems(p) {
     for (var i = 0; i < coins.length; i++) {
@@ -437,5 +435,67 @@ function collectItems(p) {
         key = null;
         score = score + 20;
         soundKey();
+    }
+}
+
+// This function is called 60 times every second
+function updateGame() {
+    // While a message is showing ("Level complete!" etc.) just count down
+    if (gameState == "caught" || gameState == "levelDone") {
+        messageTimer = messageTimer - 1;
+        if (messageTimer <= 0) {
+            if (gameState == "caught") {
+                loadLevel(levelNumber);           // try the same level again
+            } else {
+                scoreAtLevelStart = score;        // keep the score for the next level
+                loadLevel(levelNumber + 1);
+            }
+        }
+        return;
+    }
+    if (gameState != "playing") {
+        return;
+    }
+
+    frameCount = frameCount + 1;
+
+    // Update everything that moves
+    for (var i = 0; i < players.length; i++) {
+        if (players[i].lives > 0) updatePlayer(players[i]);
+    }
+    for (var j = 0; j < guards.length; j++) {
+        updateGuard(guards[j]);
+    }
+    if (boss != null && countAlivePlayers() > 0) {
+        updateBoss();
+    }
+
+    // Check damage and pickups for each living player
+    for (var k = 0; k < players.length; k++) {
+        if (players[k].lives > 0) {
+            checkDamage(players[k]);
+            collectItems(players[k]);
+        }
+    }
+
+    // If nobody has lives left, the level restarts
+    if (countAlivePlayers() == 0) {
+        gameState = "caught";
+        messageTimer = 100;
+        return;
+    }
+
+    // If a living player reaches the open door, the level is finished
+    for (var m = 0; m < players.length; m++) {
+        if (players[m].lives > 0 && hasKey && touching(players[m], door)) {
+            soundLevelDone();
+            if (levelNumber == 2) {
+                gameState = "won";
+            } else {
+                gameState = "levelDone";
+                messageTimer = 100;
+            }
+            return;
+        }
     }
 }
