@@ -683,3 +683,36 @@ function drawGame() {
     if (gameState == "caught") drawMessage("You were caught!", "Restarting the level...");
     if (gameState == "won") drawMessage("You escaped the prison!", "Final score: " + score + "  (press Enter for the menu)");
 }
+
+// ---------- 9. KEYBOARD ----------
+// When a key is pressed down
+document.addEventListener("keydown", function (event) {
+    var pressed = event.key.toLowerCase();    // for example "w", "a" or "arrowup"
+
+    // Browsers only allow sound after a key press, so we start it here
+    if (audioCtx == null) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    // Stop the page from scrolling when arrow keys or space are pressed
+    if (pressed == " " || pressed.indexOf("arrow") == 0) {
+        event.preventDefault();
+    }
+
+    keysDown[pressed] = true;
+
+    if (pressed == "m") soundOn = !soundOn;   // M switches sound on and off
+    if (pressed == "escape") gameState = "menu";
+
+    if (gameState == "menu") {
+        if (pressed == "1") startGame(1);
+        if (pressed == "2") startGame(2);
+    } else if (gameState == "won" && pressed == "enter") {
+        gameState = "menu";
+    }
+});
+
+// When a key is let go
+document.addEventListener("keyup", function (event) {
+    keysDown[event.key.toLowerCase()] = false;
+});
