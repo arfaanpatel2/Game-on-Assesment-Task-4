@@ -628,3 +628,39 @@ function drawBoss() {
     ctx.fillStyle = "red";
     ctx.fillRect(boss.x, boss.y - 10, boss.size * boss.health / 5, 6);
 }
+
+// A dark box with a message on top of the game
+function drawMessage(big, small) {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    drawText(big, canvas.height / 2, 36, "gold");
+    drawText(small, canvas.height / 2 + 35, 20, "white");
+}
+
+function drawMenu() {
+    drawText("THE FORGOTTEN PRISON", 90, 38, "gold");
+    drawText("Press 1 for ONE player", 170, 24, "white");
+    drawText("Press 2 for TWO players", 205, 24, "white");
+    drawText("Player 1: W A S D to move, Space to attack", 265, 17, "lightgray");
+    drawText("Player 2: Arrow keys to move, Enter to attack", 295, 17, "lightgray");
+    drawText("Coin +10   Key +20   Enemy +25   Boss +100", 335, 17, "lightgray");
+    drawText("Each player has 3 lives. Lose them all and the level restarts.", 365, 17, "lightgray");
+}
+
+// Shows the score and lives in the line of text above the game
+function updateInfoText() {
+    var info = document.getElementById("info");
+    if (gameState == "menu") {
+        info.textContent = "";
+        return;
+    }
+    var words = "Level " + (levelNumber + 1) + "   |   Score: " + score;
+    for (var i = 0; i < players.length; i++) {
+        words = words + "   |   Player " + (i + 1) + " lives: " + players[i].lives;
+    }
+    if (hasKey) {
+        words = words + "   |   Key: yes";
+    }
+    info.textContent = words;
+}
+
