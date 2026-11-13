@@ -580,3 +580,51 @@ function drawItems() {
         drawCircle(key.x + 4, key.y + 12, 8, "yellow");       // the round handle
     }
 }
+
+function drawPlayers() {
+    for (var i = 0; i < players.length; i++) {
+        var p = players[i];
+        if (p.lives <= 0) continue;                           // skip players who are out
+        // While protected, the player flashes (visible only some of the time)
+        if (p.invincible > 0 && Math.floor(frameCount / 5) % 2 == 0) continue;
+
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, p.size, p.size);               // the body
+        // White dot shows which way the player is facing
+        drawCircle(p.x + 14 + p.facingX * 7, p.y + 14 + p.facingY * 7, 4, "white");
+
+        if (p.attackTimer > 0) {                              // draw the sword
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(p.x + 14, p.y + 14);
+            ctx.lineTo(p.x + 14 + p.facingX * 45, p.y + 14 + p.facingY * 45);
+            ctx.stroke();
+        }
+    }
+}
+
+function drawGuards() {
+    for (var i = 0; i < guards.length; i++) {
+        var g = guards[i];
+        ctx.fillStyle = g.isGhost ? "#e8e4d4" : "#a03030";   // white ghost or red guard
+        ctx.fillRect(g.x, g.y, g.size, g.size);
+        ctx.fillStyle = "black";                                 // two eyes
+        ctx.fillRect(g.x + 8, g.y + 10, 6, 6);
+        ctx.fillRect(g.x + 22, g.y + 10, 6, 6);
+    }
+}
+
+function drawBoss() {
+    if (boss == null) return;
+    ctx.fillStyle = "#555b6b";
+    ctx.fillRect(boss.x, boss.y, boss.size, boss.size);
+    ctx.fillStyle = "red";                                       // glowing red eyes
+    ctx.fillRect(boss.x + 12, boss.y + 14, 10, 8);
+    ctx.fillRect(boss.x + 30, boss.y + 14, 10, 8);
+    // Health bar above the boss: dark red background, bright red for remaining health
+    ctx.fillStyle = "#400000";
+    ctx.fillRect(boss.x, boss.y - 10, boss.size, 6);
+    ctx.fillStyle = "red";
+    ctx.fillRect(boss.x, boss.y - 10, boss.size * boss.health / 5, 6);
+}
