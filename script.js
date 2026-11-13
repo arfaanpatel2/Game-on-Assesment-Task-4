@@ -716,3 +716,12 @@ document.addEventListener("keydown", function (event) {
 document.addEventListener("keyup", function (event) {
     keysDown[event.key.toLowerCase()] = false;
 });
+
+// ---------- 10. THE GAME LOOP ----------
+// 60 times a second: update the game, draw it, and update the text
+setInterval(function () {
+    updateGame();
+    drawGame();
+    updateInfoText();
+}, 1000 / 60);
+
