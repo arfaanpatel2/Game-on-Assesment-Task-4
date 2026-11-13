@@ -381,7 +381,7 @@ function updateBoss() {
             }
         }
     }
-    
+
     // Step towards that player
     if (closest != null && closestDistance > 0) {
         var stepX = (closest.x - boss.x) / closestDistance * 0.9;
@@ -390,3 +390,33 @@ function updateBoss() {
     }
 }
 
+
+// Takes one life away from a player
+function hurtPlayer(p) {
+    p.lives = p.lives - 1;
+    p.invincible = 90;            // 1.5 seconds of protection
+    soundHurt();
+}
+
+// Is the player touching anything dangerous?
+function checkDamage(p) {
+    if (p.invincible > 0) {
+        return;                   // protected, so nothing can hurt us
+    }
+    for (var i = 0; i < guards.length; i++) {
+        if (touching(p, guards[i])) {
+            hurtPlayer(p);
+            return;
+        }
+    }
+    if (boss != null && touching(p, boss)) {
+        hurtPlayer(p);
+        return;
+    }
+    for (var j = 0; j < traps.length; j++) {
+        if (spikesAreUp(traps[j]) && touching(p, traps[j])) {
+            hurtPlayer(p);
+            return;
+        }
+    }
+}
